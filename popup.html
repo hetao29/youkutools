@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
+<link type="text/css" rel="stylesheet" href="css/jquery.autocomplete.css"/>
+<style>
+body,div,ul,ol,li,form{
+padding:0px;margin:0px;
+font:12px/20px arial, verdana, tahoma, simsun, '\5B8B\4F53', sans-serif;word-break:break-all;word-wrap:break-word;}
+img{border:0;padding-right:10px}
+ol,ul,dl{list-style:none;}
+body {
+  min-width:500px;
+  height:450px;
+  padding-left:20px;
+  padding-right:20px;
+  padding-top:10px;
+  padding-bottom:10px;
+ overflow-x:hidden;
+}
+.left{float:left;}
+.right{float:right;}
+.video{padding-top:5px;}
+.clear{clear:both;}
+.hits{color:#999999}
+</style>
+<script>
+/*
+//本地存数据
+if(!localStorage.ct){
+	localStorage.ct=0;
+}
+localStorage.ct++;
+*/
+</script>
+<script>
+var i=0;
+function showresult(resp){
+	var r = eval(resp);
+	if(r && r.result && r.result.length>0){
+		
+		$("#keywords").autocomplete(r.result,{
+			autoFill:false,delay:100,
+			formatItem: function(row, i, max) {
+				return  "<div>"+row.keyword + " <span class='right hits'>[" + row.count + "]个视频</span></div>";
+			},
+			formatMatch: function(row, i, max) {
+				return row.keyword;
+			},
+			formatResult: function(row) {
+				return row.keyword;
+			}
+		});
+	}
+	
+}
+
+$("#keywords").ready(function(){
+	$("#keywords").focus();
+	if(localStorage.keywords)$("#keywords").val(localStorage.keywords)
+	
+	$("#keywords").keydown(function(){
+		localStorage.keywords = $("#keywords").val();
+		//$.get('http://tip.so.youku.com/search_keys?k='+$("#keywords").val()+'&type=video',showresult);
+		$.getScript('http://tip.so.youku.com/search_keys?k='+$("#keywords").val()+'&type=video');
+	});
+	$("#keywords").result(function(event, data, formatted) {
+		localStorage.keywords = data.keyword;
+		//search();
+	});
+	
+});
+$("#search").ready(function(){
+	$("#search").click(function(){
+		search();
+	})
+});
+function search(){
+	var key = $("#keywords").val();
+	$.getJSON("http://api.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=5", function(data){
+		$("#videos").html("");
+		 for(var i=0;i<data.item.length;i++){
+			
+			
+					var ul = document.createElement("ul");
+
+					var img = document.createElement("img");
+					img.src = data.item[i].snapshot;
+					//图标
+					var li_img = document.createElement("li");
+					li_img.appendChild(img);
+					li_img.className="left clear";
+					ul.appendChild(li_img);
+					//连接
+					var li_href = document.createElement("li");
+					
+					var a = document.createElement("a");
+					a.href=data.item[i].link;//"http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
+					a.target="_blank";
+					a.title=data.item[i].title;
+					a.title = data.item[i].title;
+					a.alt =data.item[i].title;
+					a.innerHTML=data.item[i].title.substr(0,32);;
+					li_href.appendChild(a);
+					ul.appendChild(li_href);
+					//会员
+					var li_user = document.createElement("li");
+					//li_user.className="right clear";
+					var a = document.createElement("a");
+					a.href="http://u.youku.com/user_show/id_"+data.item[i].author+".html";
+					a.target="_blank";
+					a.innerHTML=data.item[i].author;
+					li_user.innerHTML="会员:";
+					li_user.appendChild(a);
+					ul.appendChild(li_user);
+					//发布
+					var li = document.createElement("li");
+					//li.className="right clear";
+					li.innerHTML="发布:"+data.item[i].pubDate;;
+					ul.appendChild(li);
+					//播放
+					var li = document.createElement("li");
+					//li.className="right clear";
+					li.innerHTML="播放:"+data.item[i].playtimes;;
+					ul.appendChild(li);
+					//评论
+					var li = document.createElement("li");
+					//li.className="right clear";
+					li.innerHTML="时长:"+data.item[i].duration;
+					ul.appendChild(li);
+					/*
+					var img = document.createElement("img");
+					li.appendChild(li_img);
+					li.appendChild(li_a);
+					*/
+			
+					document.getElementById("videos").appendChild(ul);
+					//clear
+					var div_clear = document.createElement("div");
+					div_clear.className="clear";
+					document.getElementById("videos").appendChild(div_clear);
+		}
+	});
+}
+
+
+</script>
+<title></title>
+<body>
+<div>
+	<div class="left" style="padding:5px">
+		<div><a href="http://www.youku.com" target="_blank"><img src="http://static.youku.com/v1.0.0572/index/img/logo_s.gif" /></a></div>
+	</div>
+	<div class="right search" style="padding-bottom:5px">
+	<form>
+		<input type="text" size="30" id="keywords" value=""/>
+		<input type="submit" id="search" value="搜索"/>
+	</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="videos">
+<!--
+	<ul class="video ">
+		<li class="left clear"><img src="http://g1.ykimg.com/0100641F464BFD310C8A9F0343AC39EB5E31EE-5BFD-22B8-C7D6-1CF8EA2B5916"></li>
+		<li><a target="_blank" href="http://v.youku.com/v_show/id_XMTc2MjE5MzI4.html">哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。</a> 01:19</li>
+		<li>会员: <a target="_blank" href="http://u.youku.com/user_show/id_UMjE5MDY2NTk2.html">哀傷的輪廓</a></li>
+		<li>发布: 1天前</li>
+		<li>播放: 1,636,069</li>
+		<li>评论: 4,364</li>	
+	</ul>
+	<div class="clear"></div>
+	<ul class="video">
+		<li class="left"><img src="http://g1.ykimg.com/0100641F464BFD310C8A9F0343AC39EB5E31EE-5BFD-22B8-C7D6-1CF8EA2B5916"></li>
+		<div>
+		<li><a target="_blank" href="http://v.youku.com/v_show/id_XMTc2MjE5MzI4.html">哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。</a> 01:19</li>
+		<li>会员: <a target="_blank" href="http://u.youku.com/user_show/id_UMjE5MDY2NTk2.html">哀傷的輪廓</a></li>
+		<li>发布: 1天前</li>
+		<li>播放: 1,636,069</li>
+		<li>评论: 4,364</li>	
+		</div>
+	</ul>
+	<div class="clear"></div>
+-->
+</div>
+<div style="color: #909090;">Copyright&copy;2010 优酷 youku.com 版权所有<div>
+
+</body>
+<script>
+//search tips
+//
+try{
+chrome.browserAction.setBadgeText({text:""});
+}catch(e){}
+$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=5', function(resp){
+
+	var ct = resp.results.length;
+	try{
+	for (var i = 0; i<ct; i++) {
+		var ul = document.createElement("ul");
+
+		var img = document.createElement("img");
+		img.src = resp.results[i].thumburl;
+		//图标
+		var li_img = document.createElement("li");
+		li_img.appendChild(img);
+		li_img.className="left clear";
+		ul.appendChild(li_img);
+		//连接
+		var li_href = document.createElement("li");
+		
+		//li_href.className="right clear";
+		var a = document.createElement("a");
+		a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
+		a.target="_blank";
+		a.title=resp.results[i].desc;
+		a.title = resp.results[i].title;
+		a.alt = resp.results[i].title;
+		a.innerHTML=resp.results[i].title.substr(0,32);;
+		li_href.appendChild(a);
+		ul.appendChild(li_href);
+		//会员
+		var li_user = document.createElement("li");
+		//li_user.className="right clear";
+		var a = document.createElement("a");
+		a.href="http://u.youku.com/user_show/id_"+resp.results[i].username+".html";
+		a.target="_blank";
+		a.innerHTML=resp.results[i].username;
+		li_user.innerHTML="会员:";
+		li_user.appendChild(a);
+		ul.appendChild(li_user);
+		//发布
+		var li = document.createElement("li");
+		//li.className="right clear";
+		li.innerHTML="发布:"+resp.results[i].createtime;;
+		ul.appendChild(li);
+		//播放
+		var li = document.createElement("li");
+		//li.className="right clear";
+		li.innerHTML="播放:"+resp.results[i].total_vv;;
+		ul.appendChild(li);
+		//评论
+		var li = document.createElement("li");
+		//li.className="right clear";
+		li.innerHTML="评论:"+resp.results[i].total_comment;;
+		ul.appendChild(li);
+		/*
+		var img = document.createElement("img");
+		li.appendChild(li_img);
+		li.appendChild(li_a);
+		*/
+
+		document.getElementById("videos").appendChild(ul);
+		//clear
+		var div_clear = document.createElement("div");
+		div_clear.className="clear";
+		document.getElementById("videos").appendChild(div_clear);
+	}
+	}catch(e){alert(e.description);}
+
+});
+
+</script>
+
+
+</html>
