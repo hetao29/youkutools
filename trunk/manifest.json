@@ -1,6 +1,6 @@
 ﻿{
 	"name": "__MSG_name__",
-	"version": "0.27",
+	"version": "0.28",
 	"description": "__MSG_descriptin__",
 	"browser_action": {
 		"default_icon": "icons/icon.png",
@@ -12,5 +12,13 @@
 	"permissions": [
 		"http://*.youku.com/",
 		"tabs"
+	]
+	,"content_scripts": [
+		{
+			"matches": ["http://v.youku.com/v_*"],
+			"css": ["css/youku.css"],
+			"js": ["js/jquery-1.4.2.min.js","js/json2.js", "js/youku.js"],
+			"run_at":"document_end"
+		}
 	]
 }

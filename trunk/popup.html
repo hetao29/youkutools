@@ -2,11 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
+<script type="text/javascript" src="js/playlist.js"></script>
+
 <link type="text/css" rel="stylesheet" href="css/jquery.autocomplete.css"/>
-<style>
+<style type="text/css">
+#sidebar-tab{border:1px solid #ccf;margin-bottom:1.5em;}
+#tab-title h3{color:#666;font-size:14px;font-weight:250;}
+#tab-title .selected{color:#000000; font-weight:bold;} /*标题被选中时的样式*/
+#tab-title span{padding:5px; padding-left:15px; border-right:0px;margin-left:-1px;cursor:pointer;}
+#tab-content{border-top:1px solid #ccf;}
+#tab-content .hide{display:none;} /*默认让第一块内容显示，其余隐藏*/
+#tab-content ul{padding:3px 5px;overflow:hidden;}
+.pager a{text-decoration:none;}
+.pager {padding:5px;}
+
+
 body,div,ul,ol,li,form{
 padding:0px;margin:0px;
 font:12px/20px arial, verdana, tahoma, simsun, '\5B8B\4F53', sans-serif;word-break:break-all;word-wrap:break-word;}
@@ -35,6 +47,9 @@ if(!localStorage.ct){
 }
 localStorage.ct++;
 */
+chrome.tabs.getSelected(null, function (tab){
+
+});
 </script>
 <script>
 var i=0;
@@ -73,18 +88,18 @@ $("#keywords").ready(function(){
 	});
 	
 });
+
 $("#search").ready(function(){
-	$("#search").click(function(){
+	$("#search_bt").click(function(){
 		search();
 	})
 });
-function search(){
+function search(page){
+	page = page?page:1;
 	var key = $("#keywords").val();
-	$.getJSON("http://api.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=5", function(data){
-		$("#videos").html("");
+	$.getJSON("http://api.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=4&pg="+page, function(data){
+		$("#search").html("");
 		 for(var i=0;i<data.item.length;i++){
-			
-			
 					var ul = document.createElement("ul");
 
 					var img = document.createElement("img");
@@ -137,12 +152,37 @@ function search(){
 					li.appendChild(li_a);
 					*/
 			
-					document.getElementById("videos").appendChild(ul);
+					document.getElementById("search").appendChild(ul);
 					//clear
 					var div_clear = document.createElement("div");
 					div_clear.className="clear";
-					document.getElementById("videos").appendChild(div_clear);
+					document.getElementById("search").appendChild(div_clear);
 		}
+			//生成pager
+		var pager="";
+		if(data.pageNo>1){
+			pager+="<a href='javascript:search(1);void(0)'>&lt;&lt;</a>&nbsp;";
+			pager+="<a href='javascript:search("+(page-1)+");void(0)'>&lt;</a>&nbsp;";
+		}else{
+			pager+="&lt;&lt;&nbsp;&lt;&nbsp;";
+		}
+		data.totalPage = Math.ceil(data.totalSize/data.pageSize);
+		var pageStart=(page-2>0)?(page-2):1;
+		for(var i=pageStart;i<=data.totalPage&i<(page+3);i++){
+			if(page==i){
+			pager+=i+'&nbsp;';
+			}else{
+			pager+='<a href="javascript:search('+i+')">'+i+'</a>&nbsp;';
+			}
+		}
+		if(data.totalPage>data.pageNo){
+			pager+="<a href='javascript:search("+(page+1)+");void(0)'>&gt;</a>&nbsp;";
+			pager+="<a href='javascript:search("+data.totalPage+");void(0)'>&gt;&gt;</a>&nbsp;";
+		}else{
+			pager+="&gt;&gt;&nbsp;&gt;&nbsp;";
+		}
+		$("#search_pager").html(pager);
+	
 	});
 }
 
@@ -150,52 +190,120 @@ function search(){
 </script>
 <title></title>
 <body>
-<div>
-	<div class="left" style="padding:5px">
-		<div><a href="http://www.youku.com" target="_blank"><img src="http://static.youku.com/v1.0.0572/index/img/logo_s.gif" /></a></div>
-	</div>
-	<div class="right search" style="padding-bottom:5px">
-	<form>
-		<input type="text" size="30" id="keywords" value=""/>
-		<input type="submit" id="search" value="搜索"/>
-	</form>
-	</div>
-	<div class="clear"></div>
-</div>
-<div id="videos">
-<!--
-	<ul class="video ">
-		<li class="left clear"><img src="http://g1.ykimg.com/0100641F464BFD310C8A9F0343AC39EB5E31EE-5BFD-22B8-C7D6-1CF8EA2B5916"></li>
-		<li><a target="_blank" href="http://v.youku.com/v_show/id_XMTc2MjE5MzI4.html">哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。</a> 01:19</li>
-		<li>会员: <a target="_blank" href="http://u.youku.com/user_show/id_UMjE5MDY2NTk2.html">哀傷的輪廓</a></li>
-		<li>发布: 1天前</li>
-		<li>播放: 1,636,069</li>
-		<li>评论: 4,364</li>	
-	</ul>
-	<div class="clear"></div>
-	<ul class="video">
-		<li class="left"><img src="http://g1.ykimg.com/0100641F464BFD310C8A9F0343AC39EB5E31EE-5BFD-22B8-C7D6-1CF8EA2B5916"></li>
-		<div>
-		<li><a target="_blank" href="http://v.youku.com/v_show/id_XMTc2MjE5MzI4.html">哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。哥不是在打架，哥是在斗舞。</a> 01:19</li>
-		<li>会员: <a target="_blank" href="http://u.youku.com/user_show/id_UMjE5MDY2NTk2.html">哀傷的輪廓</a></li>
-		<li>发布: 1天前</li>
-		<li>播放: 1,636,069</li>
-		<li>评论: 4,364</li>	
+
+<div id="sidebar-tab">
+	<div id="tab-title">
+
+		<h3 class="left"><span class="selected">最新头条</span><span>历史记录</span><span>搜索结果</span></h3>
+		
+		<div style="padding-top:10px; padding-right:100px">
+			<div><a href="http://www.youku.com" target="_blank"><img src="http://static.youku.com/v1.0.0572/index/img/logo_s.gif" /></a></div>
 		</div>
-	</ul>
-	<div class="clear"></div>
--->
+		<div class="clear"></div>
+	</div>
+	<div id="tab-content">
+		<div  id="videos"></div>
+		<div class="hide">
+			<div id="history">
+			</div>
+			<div id="history_pager" class="pager">
+			</div>
+		</div>
+		<div class="hide">
+			<div class="search" style="padding:5px">
+				<form>
+					<input type="text" size="50" id="keywords" value=""/>
+					<input type="submit" id="search_bt" value="搜索"/>
+				</form>
+			</div>
+			<div id="search"></div>
+			<div id="search_pager" class="pager">
+			</div>
+		</div>
+	</div>
 </div>
+<script>
+$('#tab-title span').click(function(){
+	$(this).addClass("selected").siblings().removeClass();
+	$("#tab-content > div").slideUp('1000').eq($('#tab-title span').index(this)).slideDown('1000');
+});
+</script>
+
+
 <div style="color: #909090;">Copyright&copy;2010 优酷 youku.com 版权所有<div>
 
-</body>
+
+<script>
+function getHistory(page){
+	var pageSize=15;
+	var data = playlist.get(page,pageSize);
+	$("#history").html("");
+	for(var i=0;i<data.items.length;i++){
+				var ul = document.createElement("ul");
+				//连接
+				var li_href = document.createElement("li");
+				
+				li_href.className="left ";
+				li_href.width="100%";
+				var a = document.createElement("a");
+				a.href=data.items[i].url;
+				a.target="_blank";
+				a.title=data.items[i].title;
+				a.title = data.items[i].title;
+				a.alt =data.items[i].title;
+				a.innerHTML=data.items[i].title.substr(0,38);;
+				li_href.appendChild(a);
+				ul.appendChild(li_href);
+				var li = document.createElement("li");
+				//li.className="right clear";
+				li.innerHTML="&nbsp;&nbsp;(观看次数:"+data.items[i].ct+")";
+				ul.appendChild(li);
+				/*
+				var img = document.createElement("img");
+				li.appendChild(li_img);
+				li.appendChild(li_a);
+				*/
+		
+				document.getElementById("history").appendChild(ul);
+				//clear
+				var div_clear = document.createElement("div");
+				div_clear.className="clear";
+				document.getElementById("history").appendChild(div_clear);
+	}
+	//生成pager
+	var pager="";
+	if(data.page>1){
+		pager+="<a href='javascript:getHistory(1);void(0)'>&lt;&lt;</a>&nbsp;";
+		pager+="<a href='javascript:getHistory("+(page-1)+");void(0)'>&lt;</a>&nbsp;";
+	}else{
+		pager+="&lt;&lt;&nbsp;&lt;&nbsp;";
+	}
+	
+	var pageStart=(page-2>0)?(page-2):1;
+	for(var i=pageStart;i<=data.totalPage&i<(page+3);i++){
+		if(page==i){
+		pager+=i+'&nbsp;';
+		}else{
+		pager+='<a href="javascript:getHistory('+i+')">'+i+'</a>&nbsp;';
+		}
+	}
+	if(data.totalPage>data.page){
+		pager+="<a href='javascript:getHistory("+(page+1)+");void(0)'>&gt;</a>&nbsp;";
+		pager+="<a href='javascript:getHistory("+data.totalPage+");void(0)'>&gt;&gt;</a>&nbsp;";
+	}else{
+		pager+="&gt;&gt;&nbsp;&gt;&nbsp;";
+	}
+	$("#history_pager").html(pager);
+}
+getHistory(1);
+</script>
 <script>
 //search tips
-//
+
 try{
 chrome.browserAction.setBadgeText({text:""});
 }catch(e){}
-$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=5', function(resp){
+$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=4', function(resp){
 
 	var ct = resp.results.length;
 	try{
@@ -264,6 +372,5 @@ $.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_typ
 });
 
 </script>
-
-
+</body>
 </html>

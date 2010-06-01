@@ -4,9 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<script type="text/javascript" src="js/playlist.js"></script>
 <script>
-function check(){
 
+chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
+	if(changeInfo.status=="complete"){
+		if(tab.url.indexOf("v.youku.com/v_")>0){
+			playlist.add(tab.url,tab.title);
+		}
+	}
+});
+
+function check(){
 	$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=1', function(resp){
 		var s = resp.total;
 		if(resp.results[0].videoid!=localStorage.newestVideoId){
