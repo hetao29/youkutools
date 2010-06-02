@@ -250,6 +250,7 @@ $.Autocompleter = function(input, options) {
 		previousValue = currentValue;
 		
 		currentValue = lastWord(currentValue);
+		localStorage.keywords = currentValue;
 		if ( currentValue.length >= options.minChars) {
 			$input.addClass(options.loadingClass);
 			if (!options.matchCase)
