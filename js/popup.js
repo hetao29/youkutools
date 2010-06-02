@@ -237,7 +237,7 @@ $("#keywords").ready(function(){
 	if(localStorage.keywords)$("#keywords").val(localStorage.keywords)
 		
 	$("#keywords").autocomplete("http://tip.so.youku.com/search_keys?type=video&",{
-		autoFill:false,delay:200,
+		autoFill:false,delay:200,max:7,
 		formatItem: function(row, i, max) {
 			return  "<div>"+row.keyword + " <span class='right hits'>[" + row.count + "]个视频</span></div>";
 		},
