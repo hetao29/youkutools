@@ -3,7 +3,7 @@ function search(page){
 	page = page?page:1;
 	var key = $("#keywords").val();
 	$.getJSON("http://api.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=4&pg="+page, function(data){
-		$("#search").html("");
+		$("#videos").html("");
 		 for(var i=0;i<data.item.length;i++){
 					var ul = document.createElement("ul");
 
@@ -57,11 +57,11 @@ function search(page){
 					li.appendChild(li_a);
 					*/
 			
-					document.getElementById("search").appendChild(ul);
+					document.getElementById("videos").appendChild(ul);
 					//clear
 					var div_clear = document.createElement("div");
 					div_clear.className="clear";
-					document.getElementById("search").appendChild(div_clear);
+					document.getElementById("videos").appendChild(div_clear);
 		}
 			//生成pager
 		var pager="";
