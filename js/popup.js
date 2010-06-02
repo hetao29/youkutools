@@ -23,7 +23,7 @@ function search(page){
 					a.title=data.item[i].title;
 					a.title = data.item[i].title;
 					a.alt =data.item[i].title;
-					a.innerHTML=data.item[i].title.substr(0,32);;
+					a.innerHTML=data.item[i].title.substr(0,30);;
 					li_href.appendChild(a);
 					ul.appendChild(li_href);
 					//会员
@@ -182,7 +182,7 @@ function getIndexVideo(){
 			a.title=resp.results[i].desc;
 			a.title = resp.results[i].title;
 			a.alt = resp.results[i].title;
-			a.innerHTML=resp.results[i].title.substr(0,32);;
+			a.innerHTML=resp.results[i].title.substr(0,30);;
 			li_href.appendChild(a);
 			ul.appendChild(li_href);
 			//会员
