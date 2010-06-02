@@ -6,14 +6,20 @@ function search(page){
 		$("#videos").html("");
 		 for(var i=0;i<data.item.length;i++){
 					var ul = document.createElement("ul");
-
+					var a = document.createElement("a");
+					a.href=data.item[i].link;
+					a.target="_blank";
+					
 					var img = document.createElement("img");
 					img.src = data.item[i].snapshot;
 					//图标
 					var li_img = document.createElement("li");
 					li_img.appendChild(img);
-					li_img.className="left clear";
-					ul.appendChild(li_img);
+					li_img.className="left clear video";
+					a.appendChild(li_img);
+					ul.appendChild(a);
+					
+					
 					//连接
 					var li_href = document.createElement("li");
 					
@@ -21,7 +27,6 @@ function search(page){
 					a.href=data.item[i].link;//"http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
 					a.target="_blank";
 					a.title=data.item[i].title;
-					a.title = data.item[i].title;
 					a.alt =data.item[i].title;
 					a.innerHTML=data.item[i].title.substr(0,30);;
 					li_href.appendChild(a);
@@ -87,6 +92,7 @@ function search(page){
 			pager+="&gt;&gt;&nbsp;&gt;&nbsp;";
 		}
 		$("#search_pager").html(pager);
+		
 	
 	});
 }
@@ -107,7 +113,6 @@ function getHistory(page){
 				a.href=data.items[i].url;
 				a.target="_blank";
 				a.title=data.items[i].title;
-				a.title = data.items[i].title;
 				a.alt =data.items[i].title;
 				a.innerHTML=data.items[i].title.substr(0,38);;
 				li_href.appendChild(a);
@@ -165,13 +170,19 @@ function getIndexVideo(){
 		for (var i = 0; i<ct; i++) {
 			var ul = document.createElement("ul");
 	
+			var a = document.createElement("a");
+			a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
+			a.target="_blank";
+					
+					
 			var img = document.createElement("img");
 			img.src = resp.results[i].thumburl;
 			//图标
 			var li_img = document.createElement("li");
 			li_img.appendChild(img);
-			li_img.className="left clear";
-			ul.appendChild(li_img);
+			li_img.className="left clear video";
+			a.appendChild(li_img);
+			ul.appendChild(a);
 			//连接
 			var li_href = document.createElement("li");
 			
@@ -179,8 +190,7 @@ function getIndexVideo(){
 			var a = document.createElement("a");
 			a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
 			a.target="_blank";
-			a.title=resp.results[i].desc;
-			a.title = resp.results[i].title;
+			a.title=resp.results[i].title;
 			a.alt = resp.results[i].title;
 			a.innerHTML=resp.results[i].title.substr(0,30);;
 			li_href.appendChild(a);
@@ -251,7 +261,7 @@ $("#keywords").ready(function(){
 	});
 	$("#keywords").result(function(event, data, formatted) {
 		localStorage.keywords = data.keyword;
-		//search();
+		search();
 	});
 	
 });

@@ -31,8 +31,11 @@ body {
   padding-bottom:10px;
  overflow-x:hidden;
 }
+#history,#videos{padding:3px;}
+#videos ul{ height:95px; vertical-align:middle; padding-top:5px;
+}
+.video{height:95px; padding:3px;}
 .left{float:left;}
 .right{float:right;}
-.video{padding-top:5px;}
 .clear{clear:both;}
 .hits{color:#999999}
