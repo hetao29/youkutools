@@ -6,6 +6,13 @@
 #tab-content{border-top:1px solid #ccf;}
 #tab-content .hide{display:none;} /*默认让第一块内容显示，其余隐藏*/
 #tab-content ul{padding:3px 5px;overflow:hidden;}
+#search_bt{
+width:70px; height:24px;
+font: normal normal normal 15px/normal arial, sans-serif;
+margin: 0px;
+outline: 0px;
+vertical-align: top;
+}
 .pager a{text-decoration:none;}
 .pager {padding:5px;}
 
