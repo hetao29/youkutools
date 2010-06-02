@@ -1,25 +1,4 @@
 //{{{ search
-
-function showresult(resp){
-	var r = eval(resp);
-	if(r && r.result && r.result.length>0){
-		
-		$("#keywords").autocomplete(r.result,{
-			autoFill:false,delay:100,
-			formatItem: function(row, i, max) {
-				return  "<div>"+row.keyword + " <span class='right hits'>[" + row.count + "]个视频</span></div>";
-			},
-			formatMatch: function(row, i, max) {
-				return row.keyword;
-			},
-			formatResult: function(row) {
-				return row.keyword;
-			}
-		});
-	}
-	
-}
-
 function search(page){
 	page = page?page:1;
 	var key = $("#keywords").val();
@@ -256,11 +235,19 @@ $("#history").ready(function (){
 $("#keywords").ready(function(){
 	$("#keywords").focus();
 	if(localStorage.keywords)$("#keywords").val(localStorage.keywords)
-	
-	$("#keywords").keydown(function(){
-		localStorage.keywords = $("#keywords").val();
-		//$.get('http://tip.so.youku.com/search_keys?k='+$("#keywords").val()+'&type=video',showresult);
-		$.getScript('http://tip.so.youku.com/search_keys?k='+$("#keywords").val()+'&type=video');
+		
+	$("#keywords").autocomplete("http://tip.so.youku.com/search_keys?type=video&",{
+		autoFill:false,delay:200,
+		formatItem: function(row, i, max) {
+			return  "<div>"+row.keyword + " <span class='right hits'>[" + row.count + "]个视频</span></div>";
+		},
+		 extraParams: {
+		   k: function() { return $("#keywords").val(); 
+		   }
+	   },
+		formatMatch: function(row, i, max) {
+			return row.keyword;
+		}
 	});
 	$("#keywords").result(function(event, data, formatted) {
 		localStorage.keywords = data.keyword;
