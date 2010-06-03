@@ -1,12 +1,7 @@
 var playlist={}
 //localStorage.data = null;
 playlist.add=function(url,title){
-	try{
-		var data = JSON.parse(localStorage.data);//?JSON.parse(localStorage.data):new Array;
-	}catch(e){
-		var data = new Array;
-	}
-	if(!data) data = new Array;
+	var data = playlist.getAll();
 	var ct=1;
 	for(var i=0;i<data.length;i++){
 		if(data[i].url == url){
@@ -22,6 +17,15 @@ playlist.add=function(url,title){
 	localStorage.data = JSON.stringify(data);
 }
 playlist.del=function(url){
+	var data = playlist.getAll();
+	var ct=1;
+	for(var i=0;i<data.length;i++){
+		if(data[i].url == url){
+			data.splice(i,1);
+			break;
+		}
+	}
+	localStorage.data = JSON.stringify(data);
 }
 playlist.get = function(page,pageSize){
 	page = page?page:1;
