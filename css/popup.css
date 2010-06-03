@@ -32,6 +32,8 @@ body {
  overflow-x:hidden;
 }
 #history,#videos{padding:3px;}
+.history_del{display:none;}
+.history_del a{color:red;}
 #videos ul{ height:95px; vertical-align:middle; padding-top:5px;
 }
 .video{height:95px; padding:3px;}

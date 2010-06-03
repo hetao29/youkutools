@@ -98,12 +98,21 @@ function search(page){
 }
 //}}}
 //{{{history
+history_page = 1;
 function getHistory(page){
 	var pageSize=15;
+	var page = page?page:history_page;
+	history_page = page;
 	var data = playlist.get(page,pageSize);
 	$("#history").html("");
 	for(var i=0;i<data.items.length;i++){
 				var ul = document.createElement("ul");
+				ul.id="history_"+i;
+				//del
+				var li = document.createElement("li");
+				li.className="left history_del";
+				li.innerHTML="<a href=\"javascript:playlist.del('"+data.items[i].url+"');$('#"+ul.id+"').remove();void(0);\">删除</a>&nbsp;&nbsp;";
+				ul.appendChild(li);
 				//连接
 				var li_href = document.createElement("li");
 				
@@ -155,6 +164,8 @@ function getHistory(page){
 	}else{
 		pager+="&gt;&gt;&nbsp;&gt;&nbsp;";
 	}
+	pager+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	pager+="<a style='color:#666' href=\"javascript:$('.history_del').show();\">编辑</a>&nbsp;/&nbsp;<a style='color:#666' href=\"javascript:$('.history_del').hide();\">取消</a>"
 	$("#history_pager").html(pager);
 }
 //}}}
