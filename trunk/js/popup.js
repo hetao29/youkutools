@@ -166,6 +166,7 @@ function getHistory(page){
 	}
 	pager+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	pager+="<a style='color:#666' href=\"javascript:$('.history_del').show();\">编辑</a>&nbsp;/&nbsp;<a style='color:#666' href=\"javascript:$('.history_del').hide();\">取消</a>"
+	pager+="&nbsp;/&nbsp;<a style='color:#666' href=\"javascript:playlist.clear();getHistory(1);\">清空</a>";
 	$("#history_pager").html(pager);
 }
 //}}}
