@@ -16,6 +16,9 @@ playlist.add=function(url,title){
 	data.unshift({"url":url,"title":title,"ct":ct});
 	localStorage.data = JSON.stringify(data);
 }
+playlist.clear=function(){
+	localStorage.data="";
+}
 playlist.del=function(url){
 	var data = playlist.getAll();
 	var ct=1;
