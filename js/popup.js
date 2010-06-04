@@ -108,6 +108,7 @@ function getHistory(page){
 	$("#history").html("");
 	for(var i=0;i<data.items.length;i++){
 				var ul = document.createElement("ul");
+				//ul.className="clear";
 				ul.id="history_"+i;
 				//del
 				var li = document.createElement("li");
@@ -117,32 +118,25 @@ function getHistory(page){
 				//连接
 				var li_href = document.createElement("li");
 				
-				li_href.className="left history_content ";
-				li_href.width="100%";
-				var a = document.createElement("a");
-				a.href=data.items[i].url;
-				a.target="_blank";
-				a.title=data.items[i].title;
-				a.alt =data.items[i].title;
-				a.innerHTML=data.items[i].title;//.substr(0,30)+"...";
-				li_href.appendChild(a);
-				ul.appendChild(li_href);
-				var li = document.createElement("li");
-				//li.className="right clear";
-				var r="&nbsp;&nbsp;<span class='hits'>(观看"+data.items[i].ct+"次,";
+				li_href.className="history_content";
+				var r="(";
 				if(data.items[i].date){
 					var d=new Date;
 					d.setTime(data.items[i].date);
-					r+=(d.getMonth()+1)+"月"+d.getDate()+"日 "+d.getHours()+"点"+(d.getMinutes())+"分";
+					r+=d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日 "+d.getHours()+"点"+(d.getMinutes())+"分，";
 				}
-				r+=")</span>";
-				li.innerHTML=r;
-				ul.appendChild(li);
-				/*
-				var img = document.createElement("img");
-				li.appendChild(li_img);
-				li.appendChild(li_a);
-				*/
+				r+="共观看"+data.items[i].ct+"次";
+				r+=") ";
+				
+				//li_href.width="100%";
+				var a = document.createElement("a");
+				a.href=data.items[i].url;
+				a.target="_blank";
+				a.title=r+"\n"+data.items[i].title;
+				a.alt =r+"\n"+data.items[i].title;
+				a.innerHTML=data.items[i].title;//.substr(0,40);
+				li_href.appendChild(a);
+				ul.appendChild(li_href);
 				document.getElementById("history").appendChild(ul);
 	}
 	//生成pager
