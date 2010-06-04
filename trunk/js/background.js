@@ -2,6 +2,10 @@ var youkuBookMark={};
 function findYouku(bookmarkTreeNode){
 	if(bookmarkTreeNode.title && bookmarkTreeNode.title=="优酷" && bookmarkTreeNode.url==undefined){
 		youkuBookMark = bookmarkTreeNode;
+		//如果有优酷目录，并且没有设置关闭 自动书签记录功能就直接打开这个功能
+		if(localStorage.record_bookmark!="false"){
+			localStorage.record_bookmark=true;
+		}
 		return bookmarkTreeNode;
 	}
 	if(bookmarkTreeNode.children){
