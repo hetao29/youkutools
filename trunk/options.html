@@ -1,50 +1,41 @@
-<html>
-<head><title>My Test Extension Options</title></head>
-<script type="text/javascript">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.autocomplete.fixed.js"></script>
+<script type="text/javascript" src="js/playlist.js"></script>
+<script type="text/javascript" src="js/options.js"></script>
+<link type="text/css" rel="stylesheet" href="css/popup.css"/>
+<title></title>
+</head>
+<body>
+<div id="container">
 
-// Saves options to localStorage.
-function save_options() {
-  var select = document.getElementById("color");
-  var color = select.children[select.selectedIndex].value;
-  localStorage["favorite_color"] = color;
-
-  // Update status to let user know options were saved.
-  var status = document.getElementById("status");
-  status.innerHTML = "Options Saved.";
-  setTimeout(function() {
-    status.innerHTML = "";
-  }, 750);
-}
-
-// Restores select box state to saved value from localStorage.
-function restore_options() {
-  var favorite = localStorage["favorite_color"];
-  if (!favorite) {
-    return;
-  }
-  var select = document.getElementById("color");
-  for (var i = 0; i < select.children.length; i++) {
-    var child = select.children[i];
-    if (child.value == favorite) {
-      child.selected = "true";
-      break;
-    }
-  }
-}
-
-</script>
-
-<body onload="restore_options()">
-
-Favorite Color:
-<select id="color">
- <option value="red">red</option>
- <option value="green">green</option>
- <option value="blue">blue</option>
- <option value="yellow">yellow</option>
-</select>
-
-<br>
-<button onclick="save_options()">Save</button>
+<div id="sidebar-tab">
+  <div id="tab-title">
+    <h3 class="left"><span class="selected">选项设置</span></h3>
+    <div>
+      <div style="padding-top:10px; padding-left:380px"><a href="http://www.youku.com" target="_blank"><img src="http://static.youku.com/v1.0.0572/index/img/logo_s.gif" /></a></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div id="tab-content">
+    <div>
+      <div class="search" style="padding:6px">
+	  	<form>
+			<div style="vertical-align:middle">
+          		<input type="checkbox" size="50" id="record_history" value=""/><label for="record_history">播放历史自动保存</label>
+		  	</div>
+			<div>
+          		<input type="checkbox" size="50" id="record_bookmark" value=""/><label for="record_bookmark">播放历史自动保存为书签</label>
+		  	</div>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="color:#909090;">Copyright&copy;2010 优酷 youku.com 版权所有</div>
+</div>
 </body>
 </html>
