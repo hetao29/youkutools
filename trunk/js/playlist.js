@@ -13,7 +13,7 @@ playlist.add=function(url,title){
 			break;
 		}
 	}
-	data.unshift({"url":url,"title":title,"ct":ct});
+	data.unshift({"url":url,"title":title,"ct":ct,"date":(new Date).getTime()});
 	localStorage.data = JSON.stringify(data);
 }
 playlist.clear=function(){
