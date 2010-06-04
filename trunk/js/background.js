@@ -20,6 +20,7 @@ chrome.bookmarks.getTree(
 
 
 var currentId;
+var youkubookMarkBuilding=false;
 function addYoukuBookMark(title,url){
 	chrome.bookmarks.search(
 		url,
@@ -27,7 +28,8 @@ function addYoukuBookMark(title,url){
 			currentId = 0;
 			
 			if(bookmarkTreeNodes.length==0){
-				if(youkuBookMark.id==undefined){//建立
+				if(youkuBookMark.id==undefined && youkubookMarkBuilding==false){//建立
+					youkubookMarkBuilding = true;
 					chrome.bookmarks.create(
 						{'parentId': String("1"),'title': '优酷'},
 						function(newFolder) {
@@ -38,6 +40,7 @@ function addYoukuBookMark(title,url){
 									if(newFolder2){
 										//添加成功，移到第1个		
 										currentId = newFolder2.id;
+										youkubookMarkBuilding = false;
 									}
 								}
 							);
