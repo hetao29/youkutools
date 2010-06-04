@@ -1,17 +1,19 @@
 ﻿{
 	"name": "__MSG_name__",
-	"version": "0.46",
+	"version": "0.47",
 	"description": "__MSG_descriptin__",
 	"browser_action": {
 		"default_icon": "icons/icon.png",
 		"default_title": "__MSG_name__"  
 		,"popup": "popup.html" 
 	},
+	"options_page": "options.html",
 	"background_page": "background.html",
 	"default_locale":"zh_CN",
 	"permissions": [
 		"http://*.youku.com/",
 		"tabs"
+		,"bookmarks"
 	]
 	,"content_scripts": [
 		{

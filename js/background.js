@@ -1,10 +1,113 @@
+var youkuBookMark={};
+function findYouku(bookmarkTreeNode){
+	if(bookmarkTreeNode.title && bookmarkTreeNode.title=="优酷" && bookmarkTreeNode.url==undefined){
+		youkuBookMark = bookmarkTreeNode;
+		return bookmarkTreeNode;
+	}
+	if(bookmarkTreeNode.children){
+		for(var i=0;i<bookmarkTreeNode.children.length;i++){
+			findYouku(bookmarkTreeNode.children[i]);
+		}
+	}
+}
+chrome.bookmarks.getTree(
+	function(bookmarkTreeNodes) {
+		for(var i=0;i<bookmarkTreeNodes.length;i++)
+		{
+			findYouku(bookmarkTreeNodes[i]);
+		}
+	}
+);
+
+
+var currentId;
+function addYoukuBookMark(title,url){
+	chrome.bookmarks.search(
+		url,
+		function(bookmarkTreeNodes) {
+			currentId = 0;
+			
+			if(bookmarkTreeNodes.length==0){
+				if(youkuBookMark.id==undefined){//建立
+					chrome.bookmarks.create(
+						{'parentId': String("1"),'title': '优酷'},
+						function(newFolder) {
+							youkuBookMark = newFolder;
+							chrome.bookmarks.create(
+								{'parentId': newFolder.id, 'title': title,'url':url},
+								function(newFolder2){
+									if(newFolder2){
+										//添加成功，移到第1个		
+										currentId = newFolder2.id;
+				chrome.bookmarks.move(
+					currentId,
+					{
+						"parentId":youkuBookMark.id,
+						"index":currentIndex--
+					}
+									}
+								}
+							);
+						}
+					);
+				}else{
+					chrome.bookmarks.create(
+						{'parentId': youkuBookMark.id,'title': title,'url':url},
+						function(newFolder2){
+							if(newFolder2){
+								//添加成功，移到第1个
+								currentId = newFolder2.id;
+				chrome.bookmarks.move(
+					currentId,
+					{
+						"parentId":youkuBookMark.id,
+						"index":currentIndex--
+					}
+							}else{
+								youkuBookMark={};
+								addYoukuBookMark(title,url);
+							}
+						}
+					);
+				}
+			}else{
+				currentId = bookmarkTreeNodes[0].id;
+			}
+			
+			
+			
+			//移到第一个
+			if(currentId>0){
+				chrome.bookmarks.move(
+					currentId,
+					{
+						"parentId":youkuBookMark.id,
+						"index":0
+					}
+				);
+			}
+		}
+	);
+}
+
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
 	if(changeInfo.status=="complete"){
 		var url = parseURL(tab.url);
-		var title = tab.title.replace(" - 优酷视频 - 在线观看","");
 		if(url.host =="v.youku.com" && url.path.indexOf("/v_")!==false){
-			playlist.add(tab.url,title);
+			//{{{
+			if(localStorage.record_bookmark=="true")
+			{
+				addYoukuBookMark(tab.title,tab.url);
+			}
+			//}}}
+			if(localStorage.record_history=="false"){
+			}else{
+				var title = tab.title.replace(" - 优酷视频 - 在线观看","");
+				playlist.add(tab.url,title);
+			}
+			
 		}
+
 	}
 });
 
