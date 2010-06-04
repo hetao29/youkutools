@@ -39,12 +39,6 @@ function addYoukuBookMark(title,url){
 									if(newFolder2){
 										//添加成功，移到第1个		
 										currentId = newFolder2.id;
-				chrome.bookmarks.move(
-					currentId,
-					{
-						"parentId":youkuBookMark.id,
-						"index":currentIndex--
-					}
 									}
 								}
 							);
@@ -57,12 +51,6 @@ function addYoukuBookMark(title,url){
 							if(newFolder2){
 								//添加成功，移到第1个
 								currentId = newFolder2.id;
-				chrome.bookmarks.move(
-					currentId,
-					{
-						"parentId":youkuBookMark.id,
-						"index":currentIndex--
-					}
 							}else{
 								youkuBookMark={};
 								addYoukuBookMark(title,url);
