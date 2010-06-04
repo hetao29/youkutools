@@ -99,6 +99,7 @@ function search(page){
 //}}}
 //{{{history
 history_page = 1;
+history_edit = false;
 function getHistory(page){
 	var pageSize=15;
 	var page = page?page:history_page;
@@ -111,7 +112,7 @@ function getHistory(page){
 				//del
 				var li = document.createElement("li");
 				li.className="left history_del";
-				li.innerHTML="<a href=\"javascript:playlist.del('"+data.items[i].url+"');$('#"+ul.id+"').remove();void(0);\">删除</a>&nbsp;&nbsp;";
+				li.innerHTML="<a href=\"javascript:playlist.del('"+data.items[i].url+"');$('#"+ul.id+"').remove();if($('#history').children().length==0)getHistory();void(0);\">删除</a>&nbsp;&nbsp;";
 				ul.appendChild(li);
 				//连接
 				var li_href = document.createElement("li");
@@ -136,10 +137,6 @@ function getHistory(page){
 				li.appendChild(li_a);
 				*/
 				document.getElementById("history").appendChild(ul);
-				//clear
-				var div_clear = document.createElement("div");
-				div_clear.className="clear";
-				document.getElementById("history").appendChild(div_clear);
 	}
 	//生成pager
 	var pager="";
@@ -165,9 +162,13 @@ function getHistory(page){
 		pager+="&gt;&gt;&nbsp;&gt;&nbsp;";
 	}
 	pager+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	pager+="<a style='color:#666' href=\"javascript:$('.history_del').show();\">编辑</a>&nbsp;/&nbsp;<a style='color:#666' href=\"javascript:$('.history_del').hide();\">取消</a>"
+	pager+="<a style='color:#666' href=\"javascript:$('.history_del').show();history_edit=true;\">编辑</a>&nbsp;/&nbsp;<a style='color:#666' href=\"javascript:$('.history_del').hide();history_edit=false;\">取消</a>"
 	pager+="&nbsp;/&nbsp;<a style='color:#666' href=\"javascript:playlist.clear();getHistory(1);\">清空</a>";
 	$("#history_pager").html(pager);
+	
+	if(history_edit){//显示编辑
+		$('.history_del').show();
+	}
 }
 //}}}
 //{{{index video
