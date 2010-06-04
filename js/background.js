@@ -98,15 +98,15 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
 	{
 		var url = parseURL(tab.url);
 		if(url.host =="v.youku.com" && url.path.indexOf("/v_")!==false){
+			var title = tab.title.replace(" - 优酷视频 - 在线观看","");
 			if(localStorage.record_history=="false"){
 			}else{
-				var title = tab.title.replace(" - 优酷视频 - 在线观看","");
 				playlist.add(tab.url,title,add);
 			}
 			//{{{
 			if(localStorage.record_bookmark=="true")
 			{
-				addYoukuBookMark(tab.title,tab.url);
+				addYoukuBookMark(title,tab.url);
 			}
 			//}}}
 			
