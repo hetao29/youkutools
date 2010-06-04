@@ -21,7 +21,7 @@ chrome.bookmarks.getTree(
 
 var currentId;
 var youkubookMarkBuilding=false;
-function addYoukuBookMark(title,url){
+function addYoukuBookMark(title,url,add){
 	chrome.bookmarks.search(
 		url,
 		function(bookmarkTreeNodes) {
@@ -62,12 +62,14 @@ function addYoukuBookMark(title,url){
 				}
 			}else{
 				currentId = bookmarkTreeNodes[0].id;
-				chrome.bookmarks.update(
-					currentId,
-					{
-						"title":title
-					}
-				);
+				if(add==false){
+					chrome.bookmarks.update(
+						currentId,
+						{
+							"title":title
+						}
+					);
+				}
 			}
 			
 			
@@ -106,7 +108,7 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
 			//{{{
 			if(localStorage.record_bookmark=="true")
 			{
-				addYoukuBookMark(title,tab.url);
+				addYoukuBookMark(title,tab.url,add);
 			}
 			//}}}
 			
