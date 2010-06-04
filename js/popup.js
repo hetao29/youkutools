@@ -35,7 +35,7 @@ function search(page){
 					var li_user = document.createElement("li");
 					//li_user.className="right clear";
 					var a = document.createElement("a");
-					a.href="http://u.youku.com/user_show/id_"+data.item[i].author+".html";
+					a.href="http://u.youku.com/user_show/uid_"+data.item[i].author+".html";
 					a.target="_blank";
 					a.innerHTML=data.item[i].author;
 					li_user.innerHTML="会员:";
@@ -212,7 +212,7 @@ function getIndexVideo(){
 			var li_user = document.createElement("li");
 			//li_user.className="right clear";
 			var a = document.createElement("a");
-			a.href="http://u.youku.com/user_show/id_"+resp.results[i].username+".html";
+			a.href="http://u.youku.com/user_show/uid_"+resp.results[i].username+".html";
 			a.target="_blank";
 			a.innerHTML=resp.results[i].username;
 			li_user.innerHTML="会员:";
