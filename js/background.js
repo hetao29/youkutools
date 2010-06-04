@@ -1,24 +1,19 @@
 var youkuBookMark={};
-function findYouku(bookmarkTreeNode){
-	if(bookmarkTreeNode.title && bookmarkTreeNode.title=="优酷" && bookmarkTreeNode.url==undefined){
-		youkuBookMark = bookmarkTreeNode;
-		//如果有优酷目录，并且没有设置关闭 自动书签记录功能就直接打开这个功能
-		if(localStorage.record_bookmark!="false"){
-			localStorage.record_bookmark=true;
-		}
-		return bookmarkTreeNode;
-	}
-	if(bookmarkTreeNode.children){
-		for(var i=0;i<bookmarkTreeNode.children.length;i++){
-			findYouku(bookmarkTreeNode.children[i]);
-		}
-	}
-}
+
 chrome.bookmarks.getTree(
 	function(bookmarkTreeNodes) {
-		for(var i=0;i<bookmarkTreeNodes.length;i++)
-		{
-			findYouku(bookmarkTreeNodes[i]);
+		for(var i=0;i<bookmarkTreeNodes[0].children.length;i++){
+			var child=bookmarkTreeNodes[0].children[i].children;
+			for(var i=0;i<child.length;i++){
+				if(child[i].title && child[i].title=="优酷" && child[i].url==undefined){
+					youkuBookMark = child[i];
+					//如果有优酷目录，并且没有设置关闭 自动书签记录功能就直接打开这个功能
+					if(localStorage.record_bookmark!="false"){
+						localStorage.record_bookmark=true;
+					}
+					return;
+				}
+			}
 		}
 	}
 );
