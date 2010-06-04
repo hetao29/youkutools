@@ -117,19 +117,26 @@ function getHistory(page){
 				//连接
 				var li_href = document.createElement("li");
 				
-				li_href.className="left ";
+				li_href.className="left history_content ";
 				li_href.width="100%";
 				var a = document.createElement("a");
 				a.href=data.items[i].url;
 				a.target="_blank";
 				a.title=data.items[i].title;
 				a.alt =data.items[i].title;
-				a.innerHTML=data.items[i].title.substr(0,38);;
+				a.innerHTML=data.items[i].title;//.substr(0,30)+"...";
 				li_href.appendChild(a);
 				ul.appendChild(li_href);
 				var li = document.createElement("li");
 				//li.className="right clear";
-				li.innerHTML="&nbsp;&nbsp;(观看次数:"+data.items[i].ct+")";
+				var r="&nbsp;&nbsp;<span class='hits'>(观看"+data.items[i].ct+"次,";
+				if(data.items[i].date){
+					var d=new Date;
+					d.setTime(data.items[i].date);
+					r+=(d.getMonth()+1)+"月"+d.getDate()+"日 "+d.getHours()+"点"+(d.getMinutes())+"分";
+				}
+				r+=")</span>";
+				li.innerHTML=r;
 				ul.appendChild(li);
 				/*
 				var img = document.createElement("img");
@@ -199,13 +206,12 @@ function getIndexVideo(){
 			//连接
 			var li_href = document.createElement("li");
 			
-			//li_href.className="right clear";
 			var a = document.createElement("a");
 			a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
 			a.target="_blank";
 			a.title=resp.results[i].title;
 			a.alt = resp.results[i].title;
-			a.innerHTML=resp.results[i].title.substr(0,30);;
+			a.innerHTML=resp.results[i].title;//.substr(0,30);;
 			li_href.appendChild(a);
 			ul.appendChild(li_href);
 			//会员
