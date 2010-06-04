@@ -118,9 +118,9 @@ function showHistory(data){
 				
 				li_href.className="history_content";
 				var r="(";
-				if(data.items[i].date){
+				if(data.items[i].timestamp){
 					var d=new Date;
-					d.setTime(data.items[i].date);
+					d.setTime(data.items[i].timestamp);
 					r+=d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日 "+d.getHours()+"点"+(d.getMinutes())+"分，";
 				}
 				r+="共观看"+data.items[i].ct+"次";
