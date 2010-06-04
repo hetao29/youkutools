@@ -1,8 +1,9 @@
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
 	if(changeInfo.status=="complete"){
 		var url = parseURL(tab.url);
+		var title = tab.title.replace(" - 优酷视频 - 在线观看","");
 		if(url.host =="v.youku.com" && url.path.indexOf("/v_")!==false){
-			playlist.add(tab.url,tab.title);
+			playlist.add(tab.url,title);
 		}
 	}
 });
