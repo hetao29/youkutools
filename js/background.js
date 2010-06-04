@@ -121,7 +121,8 @@ function check(){
 	});
 }
 check();
-setInterval("check()",60000);
+//10分钟检测一次
+setInterval("check()",600000);
 
 function parseURL(buffer) {
   var result = { };
