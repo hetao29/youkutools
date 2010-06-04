@@ -100,11 +100,9 @@ function search(page){
 //{{{history
 history_page = 1;
 history_edit = false;
-function getHistory(page){
-	var pageSize=15;
-	var page = page?page:history_page;
-	history_page = page;
-	var data = playlist.get(page,pageSize);
+function showHistory(data){
+	page = data.page;
+	
 	$("#history").html("");
 	for(var i=0;i<data.items.length;i++){
 				var ul = document.createElement("ul");
@@ -170,6 +168,14 @@ function getHistory(page){
 	if(history_edit){//显示编辑
 		$('.history_del').show();
 	}
+}
+
+function getHistory(page){
+	var pageSize=15;
+	var page = page?page:history_page;
+	history_page = page;
+	var data = playlist.get(page,pageSize,showHistory);
+
 }
 //}}}
 //{{{index video

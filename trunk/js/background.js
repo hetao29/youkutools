@@ -62,6 +62,12 @@ function addYoukuBookMark(title,url){
 				}
 			}else{
 				currentId = bookmarkTreeNodes[0].id;
+				chrome.bookmarks.update(
+					currentId,
+					{
+						"title":title
+					}
+				);
 			}
 			
 			
@@ -81,20 +87,28 @@ function addYoukuBookMark(title,url){
 }
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
-	if(changeInfo.status=="complete"){
+	var add=false;
+	if(changeInfo.status=="loading"){
+		//loading的时候加1
+		add=true;
+	}else{
+		//complete的时候更新标题
+		add=false;
+	}
+	{
 		var url = parseURL(tab.url);
 		if(url.host =="v.youku.com" && url.path.indexOf("/v_")!==false){
+			if(localStorage.record_history=="false"){
+			}else{
+				var title = tab.title.replace(" - 优酷视频 - 在线观看","");
+				playlist.add(tab.url,title,add);
+			}
 			//{{{
 			if(localStorage.record_bookmark=="true")
 			{
 				addYoukuBookMark(tab.title,tab.url);
 			}
 			//}}}
-			if(localStorage.record_history=="false"){
-			}else{
-				var title = tab.title.replace(" - 优酷视频 - 在线观看","");
-				playlist.add(tab.url,title);
-			}
 			
 		}
 
