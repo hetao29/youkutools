@@ -1,12 +1,25 @@
 /*
 $("#movie_player").ready(function(){
-	//$("#movie_player").width("150%");
-	//$("#movie_player").height("110%");
+								  $("#resize").hide();
+								  $(".resize").html("<span>ÐÂ´°¿Ú²¥·Å2</span>");
+								  $(".resize").click(function(){
+															  
+															  alert("D");
+															  void(0);
+															  });
+	$("#player").append('<a onclick="reset()">DD</a>');
+	//$("#player").width("700px");
+	
+	//$("#player").height("400px");
 });
-$("*").css({"background-color":"#FFCC66"});
-$(".head").css({"background-color":"#FFCC66"});
-$(".body").css({"background-color":"#FFCC66"});
-
+function reset(){
+	$("#player").css({"width":"500px","position":"relative"});
+	
+}
+//$("*").css({"background-color":"#FFCC66"});
+//$("#player").css({"width":"500px","position":"absolute","left":"0px"});
+//$(".body").css({"background-color":"#FFCC66"});
+/*
 //{{{
 var playerId="movie_player";
 function player(moviename) {

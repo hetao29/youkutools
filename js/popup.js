@@ -256,8 +256,8 @@ function getIndexVideo(){
 }
 //}}}
 $("#history").ready(function (){
-	  getHistory(1);
 	  getIndexVideo();
+	  getHistory(1);
 });
 
 
