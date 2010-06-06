@@ -2,7 +2,7 @@
 function search(page){
 	page = page?page:1;
 	var key = $("#keywords").val();
-	$.getJSON("http://api.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=4&pg="+page, function(data){
+	$.getJSON("http://www.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=4&pg="+page, function(data){
 		$("#videos").html("");
 		 for(var i=0;i<data.item.length;i++){
 			var ul = document.createElement("ul");
@@ -181,77 +181,75 @@ function getHistory(page){
 //{{{index video
 function getIndexVideo(){
 	try{
-	chrome.browserAction.setBadgeText({text:""});
+		chrome.browserAction.setBadgeText({text:""});
 	}catch(e){}
-	$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=4', function(resp){
-	
-		var ct = resp.results.length;
-		try{
-		for (var i = 0; i<ct; i++) {
-			var ul = document.createElement("ul");
-	
-			var a = document.createElement("a");
-			a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
-			a.target="_blank";
-					
-					
-			var img = document.createElement("img");
-			img.src = resp.results[i].thumburl;
-			//图标
-			var li_img = document.createElement("li");
-			li_img.appendChild(img);
-			li_img.className="left clear video";
-			a.appendChild(li_img);
-			ul.appendChild(a);
-			//连接
-			var li_href = document.createElement("li");
-			
-			var a = document.createElement("a");
-			a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
-			a.target="_blank";
-			a.title=resp.results[i].title;
-			a.alt = resp.results[i].title;
-			a.innerHTML=resp.results[i].title;//.substr(0,30);;
-			li_href.appendChild(a);
-			ul.appendChild(li_href);
-			//会员
-			var li_user = document.createElement("li");
-			//li_user.className="right clear";
-			var a = document.createElement("a");
-			a.href="http://u.youku.com/user_show/uid_"+resp.results[i].username+".html";
-			a.target="_blank";
-			a.innerHTML=resp.results[i].username;
-			li_user.innerHTML="会员:";
-			li_user.appendChild(a);
-			ul.appendChild(li_user);
-			//发布
-			var li = document.createElement("li");
-			//li.className="right clear";
-			li.innerHTML="发布:"+resp.results[i].createtime;;
-			ul.appendChild(li);
-			//播放
-			var li = document.createElement("li");
-			//li.className="right clear";
-			li.innerHTML="播放:"+resp.results[i].total_vv;;
-			ul.appendChild(li);
-			//评论
-			var li = document.createElement("li");
-			//li.className="right clear";
-			li.innerHTML="评论:"+resp.results[i].total_comment;;
-			ul.appendChild(li);
-			/*
-			var img = document.createElement("img");
-			li.appendChild(li_img);
-			li.appendChild(li_a);
-			*/
-			document.getElementById("videos").appendChild(ul);
-			//clear
-			var div_clear = document.createElement("div");
-			div_clear.className="clear";
-			document.getElementById("videos").appendChild(div_clear);
+		$.getJSON('http://www.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=4', function(resp){
+		if(resp && resp.results && resp.total){
+			var ct = resp.results.length;
+			for (var i = 0; i<ct; i++) {
+				var ul = document.createElement("ul");
+		
+				var a = document.createElement("a");
+				a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
+				a.target="_blank";
+						
+						
+				var img = document.createElement("img");
+				img.src = resp.results[i].thumburl;
+				//图标
+				var li_img = document.createElement("li");
+				li_img.appendChild(img);
+				li_img.className="left clear video";
+				a.appendChild(li_img);
+				ul.appendChild(a);
+				//连接
+				var li_href = document.createElement("li");
+				
+				var a = document.createElement("a");
+				a.href="http://v.youku.com/v_show/id_"+resp.results[i].videoid+".html";
+				a.target="_blank";
+				a.title=resp.results[i].title;
+				a.alt = resp.results[i].title;
+				a.innerHTML=resp.results[i].title;//.substr(0,30);;
+				li_href.appendChild(a);
+				ul.appendChild(li_href);
+				//会员
+				var li_user = document.createElement("li");
+				//li_user.className="right clear";
+				var a = document.createElement("a");
+				a.href="http://u.youku.com/user_show/uid_"+resp.results[i].username+".html";
+				a.target="_blank";
+				a.innerHTML=resp.results[i].username;
+				li_user.innerHTML="会员:";
+				li_user.appendChild(a);
+				ul.appendChild(li_user);
+				//发布
+				var li = document.createElement("li");
+				//li.className="right clear";
+				li.innerHTML="发布:"+resp.results[i].createtime;;
+				ul.appendChild(li);
+				//播放
+				var li = document.createElement("li");
+				//li.className="right clear";
+				li.innerHTML="播放:"+resp.results[i].total_vv;;
+				ul.appendChild(li);
+				//评论
+				var li = document.createElement("li");
+				//li.className="right clear";
+				li.innerHTML="评论:"+resp.results[i].total_comment;;
+				ul.appendChild(li);
+				/*
+				var img = document.createElement("img");
+				li.appendChild(li_img);
+				li.appendChild(li_a);
+				*/
+				document.getElementById("videos").appendChild(ul);
+				//clear
+				var div_clear = document.createElement("div");
+				div_clear.className="clear";
+				document.getElementById("videos").appendChild(div_clear);
+			}
 		}
-		}catch(e){alert(e.description);}
-	
 	});
 }
 //}}}
