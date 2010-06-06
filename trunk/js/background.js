@@ -118,11 +118,13 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
 });
 
 function check(){
-	$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=1', function(resp){
-		var s = resp.total;
-		if(resp.results[0].videoid!=localStorage.newestVideoId){
-			chrome.browserAction.setBadgeText({text:"NEW"});
-			localStorage.newestVideoId = resp.results[0].videoid;
+	$.getJSON('http://www.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=1', function(resp){
+		if(resp && resp.results && resp.total){
+			var s = resp.total;
+			if(resp.results[0].videoid!=localStorage.newestVideoId){
+				chrome.browserAction.setBadgeText({text:"NEW"});
+				localStorage.newestVideoId = resp.results[0].videoid;
+			}
 		}
 	});
 }
