@@ -1,7 +1,7 @@
 ﻿function youku_chrome_autoplay(){
 	var onPlayerComplete_old = onPlayerComplete
 	onPlayerComplete=function(){
-		if($("replay").checked)PlayerSeek(0.01);
+		if($("replay").checked)PlayerSeek(0);
 		onPlayerComplete_old();
 	}
 }
