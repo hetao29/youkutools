@@ -14,7 +14,8 @@ playlist.add=function(url,title,add){
 							sql,
 							[(new Date).getTime(),url], null, 
 							function(tx, error) {
-								alert(error.code+":"+error.message);
+								console.log(error);
+								//alert(error.code+":"+error.message);
 							} 
 						); 
 					}else{
@@ -24,7 +25,8 @@ playlist.add=function(url,title,add){
 							sql,
 							[(new Date).getTime(),title,url], null, 
 							function(tx, error) {
-								alert(error.code+":"+error.message);
+								console.log(error);
+								//alert(error.code+":"+error.message);
 							} 
 						);
 					}
@@ -41,7 +43,7 @@ playlist.clear=function(){
 				"delete from histories",
 				[], null, 
 				function(tx, error) {
-					alert(error.code+":"+error.message);
+					console.log(error);
 				} 
 			); 
 		}
@@ -54,7 +56,7 @@ playlist.del=function(url){
 				"delete from histories where url=?",
 				[url], null, 
 				function(tx, error) {
-					//alert(error.code+":"+error.message);
+					console.log(error);
 				} 
 			); 
 		}
@@ -72,8 +74,6 @@ playlist.get = function(page,pageSize,callback){
 				[], 
 				function(tx, result) {
 					total = result.rows.item(0)['c'];
-
-
 					playlist.db.transaction(
 						function(tx) {
 							tx.executeSql(
@@ -94,6 +94,7 @@ playlist.get = function(page,pageSize,callback){
 								},
 								function(tx, error) {
 									//alert(error.code+":"+error.message);
+									console.log(error);
 								}
 							); 
 						}
@@ -103,6 +104,7 @@ playlist.get = function(page,pageSize,callback){
 				},
 				function(tx, error) {
 					//alert(error.code+":"+error.message);
+					console.log(error);
 				}
 			); 
 		}
@@ -118,6 +120,7 @@ playlist.init = function(){
 						"SELECT COUNT(*) FROM histories",
 						[], null, 
 						function(tx, error) {
+							console.log(error);
 							tx.executeSql(
 								"CREATE TABLE histories (url REAL UNIQUE, title TEXT, ct REAL, timestamp REAL)",
 								[], null, null);
