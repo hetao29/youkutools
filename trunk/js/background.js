@@ -1,4 +1,4 @@
-var youkuBookMark={};
+﻿var youkuBookMark={};
 var currentId;
 var youkubookMarkBuilding=false;
 

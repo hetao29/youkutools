@@ -1,4 +1,4 @@
-$("#record_history").ready(function(){
+﻿$("#record_history").ready(function(){
 	$("#record_history").click(function(){
 		localStorage.record_history = $("#record_history").attr("checked");
 	});

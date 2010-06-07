@@ -1,4 +1,4 @@
-//{{{ search
+﻿//{{{ search
 function search(page){
 	page = page?page:1;
 	var key = $("#keywords").val();
