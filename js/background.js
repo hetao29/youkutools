@@ -1,136 +1,7 @@
 var youkuBookMark={};
-
-chrome.bookmarks.getTree(
-	function(bookmarkTreeNodes) {
-		for(var i=0;i<bookmarkTreeNodes[0].children.length;i++){
-			var child=bookmarkTreeNodes[0].children[i].children;
-			for(var i=0;i<child.length;i++){
-				if(child[i].title && child[i].title=="优酷" && child[i].url==undefined){
-					youkuBookMark = child[i];
-					//如果有优酷目录，并且没有设置关闭 自动书签记录功能就直接打开这个功能
-					if(localStorage.record_bookmark!="false"){
-						localStorage.record_bookmark=true;
-					}
-					return;
-				}
-			}
-		}
-	}
-);
-
-
 var currentId;
 var youkubookMarkBuilding=false;
-function addYoukuBookMark(title,url,add){
-	chrome.bookmarks.search(
-		url,
-		function(bookmarkTreeNodes) {
-			currentId = 0;
-			
-			if(bookmarkTreeNodes.length==0){
-				if(youkuBookMark.id==undefined && youkubookMarkBuilding==false){//建立
-					youkubookMarkBuilding = true;
-					chrome.bookmarks.create(
-						{'parentId': String("1"),'title': '优酷'},
-						function(newFolder) {
-							youkuBookMark = newFolder;
-							chrome.bookmarks.create(
-								{'parentId': newFolder.id, 'title': title,'url':url},
-								function(newFolder2){
-									if(newFolder2){
-										//添加成功，移到第1个		
-										currentId = newFolder2.id;
-										youkubookMarkBuilding = false;
-									}
-								}
-							);
-						}
-					);
-				}else{
-					chrome.bookmarks.create(
-						{'parentId': youkuBookMark.id,'title': title,'url':url},
-						function(newFolder2){
-							if(newFolder2){
-								//添加成功，移到第1个
-								currentId = newFolder2.id;
-							}else{
-								youkuBookMark={};
-								addYoukuBookMark(title,url);
-							}
-						}
-					);
-				}
-			}else{
-				currentId = bookmarkTreeNodes[0].id;
-				if(add==false){
-					chrome.bookmarks.update(
-						currentId,
-						{
-							"title":title
-						}
-					);
-				}
-			}
-			
-			
-			
-			//移到第一个
-			if(currentId>0){
-				chrome.bookmarks.move(
-					currentId,
-					{
-						"parentId":youkuBookMark.id,
-						"index":0
-					}
-				);
-			}
-		}
-	);
-}
 
-chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
-	var add=false;
-	if(changeInfo.status=="loading"){
-		//loading的时候加1
-		add=true;
-	}else{
-		//complete的时候更新标题
-		add=false;
-	}
-	{
-		var url = parseURL(tab.url);
-		if(url.host =="v.youku.com" && url.path.indexOf("/v_")!==false){
-			var title = tab.title.replace(" - 优酷视频 - 在线观看","");
-			if(localStorage.record_history=="false"){
-			}else{
-				playlist.add(tab.url,title,add);
-			}
-			//{{{
-			if(localStorage.record_bookmark=="true")
-			{
-				addYoukuBookMark(title,tab.url,add);
-			}
-			//}}}
-			
-		}
-
-	}
-});
-
-function check(){
-	$.getJSON('http://www.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=1', function(resp){
-		if(resp && resp.results && resp.total){
-			var s = resp.total;
-			if(resp.results[0].videoid!=localStorage.newestVideoId){
-				chrome.browserAction.setBadgeText({text:"NEW"});
-				localStorage.newestVideoId = resp.results[0].videoid;
-			}
-		}
-	});
-}
-check();
-//10分钟检测一次
-setInterval("check()",600000);
 
 function parseURL(buffer) {
   var result = { };
@@ -262,19 +133,134 @@ function ParseException(description) {
     this.description = description;
 }
 
-/*
-chrome.browserAction.onClicked.addListener(function(tab) {
-		chrome.browserAction.setBadgeText({text:""});
-		chrome.tabs.create({url:"http://www.youku.com/"});
-});
-*//*
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-_gaq.push(['_trackPageview']);
 
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = 'https://ssl.google-analytics.com/ga.js';
-(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
-})();
-*/
+
+function addYoukuBookMark(title,url,add){
+	chrome.bookmarks.search(
+		url,
+		function(bookmarkTreeNodes) {
+			currentId = 0;
+			
+			if(bookmarkTreeNodes.length==0){
+				if(youkuBookMark.id==undefined && youkubookMarkBuilding==false){//建立
+					youkubookMarkBuilding = true;
+					chrome.bookmarks.create(
+						{'parentId': String("1"),'title': '优酷'},
+						function(newFolder) {
+							youkuBookMark = newFolder;
+							chrome.bookmarks.create(
+								{'parentId': newFolder.id, 'title': title,'url':url},
+								function(newFolder2){
+									if(newFolder2){
+										//添加成功，移到第1个		
+										currentId = newFolder2.id;
+										youkubookMarkBuilding = false;
+									}
+								}
+							);
+						}
+					);
+				}else{
+					chrome.bookmarks.create(
+						{'parentId': youkuBookMark.id,'title': title,'url':url},
+						function(newFolder2){
+							if(newFolder2){
+								//添加成功，移到第1个
+								currentId = newFolder2.id;
+							}else{
+								youkuBookMark={};
+								addYoukuBookMark(title,url);
+							}
+						}
+					);
+				}
+			}else{
+				currentId = bookmarkTreeNodes[0].id;
+				if(add==false){
+					chrome.bookmarks.update(
+						currentId,
+						{
+							"title":title
+						}
+					);
+				}
+			}
+			
+			
+			
+			//移到第一个
+			if(currentId>0){
+				chrome.bookmarks.move(
+					currentId,
+					{
+						"parentId":youkuBookMark.id,
+						"index":0
+					}
+				);
+			}
+		}
+	);
+}
+
+
+function check(){
+	$.getJSON('http://www.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=1', function(resp){
+		if(resp && resp.results && resp.total){
+			var s = resp.total;
+			if(resp.results[0].videoid!=localStorage.newestVideoId){
+				chrome.browserAction.setBadgeText({text:"NEW"});
+				localStorage.newestVideoId = resp.results[0].videoid;
+			}
+		}
+	});
+}
+chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab) {
+	var add=false;
+	if(changeInfo.status=="loading"){
+		//loading的时候加1
+		add=true;
+	}else{
+		//complete的时候更新标题
+		add=false;
+	}
+	{
+		var url = parseURL(tab.url);
+		if(url.host =="v.youku.com" && url.path.indexOf("/v_")!==false){
+			var title = tab.title.replace(" - 优酷视频 - 在线观看","");
+			if(localStorage.record_history=="false"){
+			}else{
+				playlist.add(tab.url,title,add);
+			}
+			//{{{
+			if(localStorage.record_bookmark=="true")
+			{
+				addYoukuBookMark(title,tab.url,add);
+			}
+			//}}}
+			
+		}
+
+	}
+});
+
+chrome.bookmarks.getTree(
+	function(bookmarkTreeNodes) {
+		for(var i=0;i<bookmarkTreeNodes[0].children.length;i++){
+			var child=bookmarkTreeNodes[0].children[i].children;
+			for(var i=0;i<child.length;i++){
+				if(child[i].title && child[i].title=="优酷" && child[i].url==undefined){
+					youkuBookMark = child[i];
+					//如果有优酷目录，并且没有设置关闭 自动书签记录功能就直接打开这个功能
+					if(localStorage.record_bookmark!="false"){
+						localStorage.record_bookmark=true;
+					}
+					return;
+				}
+			}
+		}
+	}
+);
+
+check();
+//10分钟检测一次
+setInterval("check()",600000);
