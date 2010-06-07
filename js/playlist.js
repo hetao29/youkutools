@@ -1,6 +1,4 @@
-var playlist={
-	
-}
+﻿var playlist={}
 playlist.add=function(url,title,add){
 	var ct=1;
 	playlist.db.transaction(
@@ -111,7 +109,6 @@ playlist.get = function(page,pageSize,callback){
 	);		
 }
 playlist.init = function(){
-	var error;
 	if (window.openDatabase){
 		// openDatabase(name, version, displayName, in unsigned long estimatedSize, in optional creationCallback);
 		playlist.db =  openDatabase('youkutools', '', 'youkutools', 1024*1024, function (db) {
