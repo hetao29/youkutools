@@ -112,22 +112,24 @@ playlist.get = function(page,pageSize,callback){
 }
 playlist.init = function(){
 	var error;
-	playlist.db =  openDatabase('youkutools', '1.0', 'history storage', 5*1024*1024, function (db) {
-																							
-		db.transaction(
-			function(tx) {
-				tx.executeSql(
-					"SELECT COUNT(*) FROM histories",
-					[], null, 
-					function(tx, error) {
-						tx.executeSql(
-							"CREATE TABLE histories (url REAL UNIQUE, title TEXT, ct REAL, timestamp REAL)",
-							[], null, null);
-					} 
-				); 
-			}
-		);
-						
-	});
+	if (window.openDatabase){
+		// openDatabase(name, version, displayName, in unsigned long estimatedSize, in optional creationCallback);
+		playlist.db =  openDatabase('youkutools', '', 'youkutools', 1024*1024, function (db) {
+			db.transaction(
+				function(tx) {
+					tx.executeSql(
+						"SELECT COUNT(*) FROM histories",
+						[], null, 
+						function(tx, error) {
+							tx.executeSql(
+								"CREATE TABLE histories (url REAL UNIQUE, title TEXT, ct REAL, timestamp REAL)",
+								[], null, null);
+						} 
+					); 
+				}
+			);
+							
+		});
+	}
 }
 playlist.init();
