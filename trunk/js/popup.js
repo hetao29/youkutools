@@ -78,7 +78,8 @@ function search(page){
 		}
 		data.totalPage = Math.ceil(data.totalSize/data.pageSize);
 		var pageStart=(page-2>0)?(page-2):1;
-		for(var i=pageStart;i<=data.totalPage&i<(page+3);i++){
+		var j=0;
+		for(var i=pageStart;i<=data.totalPage&j++<5;i++){
 			if(page==i){
 			pager+=i+'&nbsp;';
 			}else{
@@ -147,7 +148,8 @@ function showHistory(data){
 	}
 	
 	var pageStart=(page-2>0)?(page-2):1;
-	for(var i=pageStart;i<=data.totalPage&i<(page+3);i++){
+	var j=0;
+	for(var i=pageStart;i<=data.totalPage&j++<5;i++){
 		if(page==i){
 		pager+=i+'&nbsp;';
 		}else{
