@@ -1,6 +1,6 @@
 ﻿function youku_chrome_autoplay(){
 	onPlayerComplete=function(){
-		if($("replay").checked)PlayerSeek(0);
+		if($("replay").checked)PlayerSeek(0.01);
 	}
 }
 $("#movie_player").ready(function(){
