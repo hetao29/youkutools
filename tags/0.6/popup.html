@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.autocomplete.fixed.js"></script>
+<script type="text/javascript" src="js/playlist.js"></script>
+<script type="text/javascript" src="js/popup.js"></script>
+<link type="text/css" rel="stylesheet" href="css/jquery.autocomplete.css"/>
+<link type="text/css" rel="stylesheet" href="css/popup.css"/>
+<title></title>
+</head>
+<body>
+<div id="container">
+<div id="sidebar-tab">
+  <div id="tab-title">
+    <h3 class="left"><span class="selected">视频搜索</span><span>播放历史</span></h3>
+    <div>
+      <div style="padding-top:10px; padding-left:380px"><a href="http://www.youku.com" target="_blank"><img src="http://static.youku.com/v1.0.0572/index/img/logo_s.gif" /></a></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div id="tab-content">
+    <div>
+      <div class="search" style="padding:6px">
+        <form onsubmit="search();return false;">
+          <input type="text" size="50" id="keywords" placeholder="请输入关键词" autofocus  value=""/>
+          <input type="submit" id="search_bt"  value="搜  索"/>
+        </form>
+      </div>
+      <div id="videos"></div>
+      <div id="search_pager" class="pager"> </div>
+    </div>
+    <div class="hide">
+		 <div id="history">
+		 <!--
+		  <ul>
+		  
+			<li class="left history_del"><a href="javascript:playlist.del('xx');getHistory();void(0);">删除</a>&nbsp;&nbsp;</li>
+			<li class="left"><a href="http://v.youku.com/v_show/id_XMTY0NzA5MTAw.html" target="_blank" title="史上十大极限跳跃 - 视频 - 优酷视频 - 在线观看">史上十大极限跳跃 - 视频 - 优酷视频 - 在线观看</a></li>
+			<li>&nbsp;&nbsp;(观看次数:2)</li>
+		  </ul>
+		  <ul>
+		  
+			<li class="left history_del"><a href="javascript:playlist.del('xx');getHistory();void(0);">删除</a>&nbsp;&nbsp;</li>
+			<li class="left"><a href="http://v.youku.com/v_show/id_XMTY0NzA5MTAw.html" target="_blank" title="史上十大极限跳跃 - 视频 - 优酷视频 - 在线观看">史上十大极限跳跃 - 视频 - 优酷视频 - 在线观看</a></li>
+			<li>&nbsp;&nbsp;(观看次数:2)</li>
+		  </ul>
+		  -->
+		</div>
+      <div id="history_pager" class="pager"> </div>
+    </div>
+  </div>
+</div>
+<div style="color:#909090;">Copyright&copy;2010 优酷 youku.com 版权所有</div>
+</div>
+</body>
+</html>
