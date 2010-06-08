@@ -246,9 +246,9 @@ chrome.bookmarks.getTree(
 	function(bookmarkTreeNodes) {
 		for(var i=0;i<bookmarkTreeNodes[0].children.length;i++){
 			var child=bookmarkTreeNodes[0].children[i].children;
-			for(var i=0;i<child.length;i++){
-				if(child[i].title && child[i].title=="优酷" && child[i].url==undefined){
-					youkuBookMark = child[i];
+			for(var j=0;j<child.length;j++){
+				if(child[j].title && child[j].title=="优酷" && child[j].url==undefined){
+					youkuBookMark = child[j];
 					//如果有优酷目录，并且没有设置关闭 自动书签记录功能就直接打开这个功能
 					if(localStorage.record_bookmark!="false"){
 						localStorage.record_bookmark=true;
