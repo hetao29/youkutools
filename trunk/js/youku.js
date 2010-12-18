@@ -2,7 +2,9 @@
 	vid = videoId2;
 	var onPlayerComplete_old = onPlayerComplete
 	onPlayerComplete=function(){
-		if($("replay").checked)PlayerSeek(0);
+		if($("replay").checked){
+			$("player").innerHTML = $("player").innerHTML;
+		}
 		onPlayerComplete_old();
 	}
 }
