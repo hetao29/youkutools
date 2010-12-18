@@ -50,9 +50,9 @@ $("#movie_player").ready(function(){
 						'<div id="_ContentLyrics" class="lyrics" style="overflow:hidden;height:320px;">'+
 						'</div>'+
 						'<div id="_IDLyricsAdmin" style="display: block;line-height:30px; ">'+
-						'<span id="_IDLyricsBk" style="cursor:pointer;border:1px solid;">后退</span>'+
-						'<span id="_IDLyricsPr" style="cursor:pointer;border:1px solid;">前进</span>'+
-						'<span id="_IDLyricsErr" style="cursor:pointer;border:1px solid;">报错</span>'+
+						'<span id="_IDLyricsBk" style="cursor:pointer;border:1px solid;"><a>后退</a></span>'+
+						'<span id="_IDLyricsPr" style="cursor:pointer;border:1px solid;"><a>前进</a></span>'+
+						'<span id="_IDLyricsErr" style="cursor:pointer;border:1px solid;"><a>报错</a></span>'+
 						//'<span id="_IDLyricsView" style="cursor:pointer;border:1px solid;">查看</span>'+
 						'<span id="_IDLyricsInfo" style="position: absolute; top: 316px; left: 200px; display: none; "></span>'+
 						'<div class="myad">'+
