@@ -108,10 +108,7 @@ function checkTime(){
 		o_lyrics.animate({scrollTop:t+"px"},"fast","linear",function(){
 				if(LyricCurrent.html().replace("&nbsp",'')!=""){
 						var t2 = LyricCurrent.position().top;
-						LyricTop.animate({"top":t2+"px"},"fast");
-						LyricTop.animate({
-								"height":LyricCurrent.height()+"px"
-						},"fast");
+						LyricTop.animate({"top":t2+"px","height":LyricCurrent.height()+"px"},"fast");
 						LyricCurrent.addClass("red");
 				}
 		});
