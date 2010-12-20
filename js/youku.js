@@ -42,7 +42,8 @@ $("#movie_player").ready(function(){
 				if(result.LyricsContent && result.lyrics_offset!=""){
 				var content='<div class="box nBox" group="info">'+
 						'<div class="head" style="cursor: pointer; ">'+
-						'<div class="caption"><h3 class="title">歌词信息</h3>　由<a href="http://youku.fm/" target="_blank">YouKu.FM</a>提供支持</div>'+
+						'<div class="caption"><h3 class="title">歌词信息</h3></div>'+
+						//'<div class="caption"><h3 class="title">歌词信息</h3>　由<a href="http://youku.fm/" target="_blank">YouKu.FM</a>提供支持</div>'+
 						'</div>'+
 						'<div class="body" style="display: block; ">'+
 						'<div class="info" id="long" style="display: block; ">'+
