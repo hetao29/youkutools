@@ -14,8 +14,7 @@ var o_lyrics;
 var gc= new Array();
 var pre_index=0;
 var playerId="movie_player";
-var o = location.href.match(/id_(.*?)\./);
-var vid = (o[1]);
+var vid = location.href;
 var mvid= 0;
 var url="http://youku.fm/";
 $("#movie_player").ready(function(){
