@@ -23,8 +23,15 @@ $("#movie_player").ready(function(){
 	$(".resize").append("<script>"+youku_chrome_autoplay+";youku_chrome_autoplay();</script>");
 	$(".resize").append("<script>"+youku_chrome_autoplay+";youku_chrome_autoplay();</script>");
 	if(	
-		!$(".crumbs A:contains('音乐')").html() && $("#vpofficialtitle")==null
+		!$(".crumbs A:contains('音乐')").html() && $("#vpofficialtitle").html()==null
 	)return;;
+	start_interval = setInterval(checkTime,500);
+});
+var start_flag=false;
+var start_interval;
+function start(){
+	if(start_flag)return;
+	start_flag=true;
 	$.ajax({
 		url: url+"player.main.getlyric",
 		data: {
@@ -64,13 +71,13 @@ $("#movie_player").ready(function(){
 					showLyric(result.LyricsContent);
 					lyrics_offset = parseInt(result.LyricsOffset);
 					mvid = result.MvID;
-					setInterval(checkTime,500);
+					setInterval(play,500);
 				}
 			}
 		}
 	
 	}); 
-});
+};
 function _player(moviename) {
         if (navigator.appName.indexOf("Microsoft") != -1)return window[moviename?moviename:playerId];
         return document[moviename?moviename:playerId];
@@ -80,6 +87,16 @@ function PlayerInfo(){
 };
 
 function checkTime(){
+		var r= PlayerInfo();
+		if(!r){
+			return;
+		}
+		var time = isNaN(r.time)?0:r.time;
+		var alltime = isNaN(r.alltime)?0:r.alltime;
+		if(alltime>90 && alltime<8*60)start();//8分钟内的才出
+		clearInterval(start_interval);
+}
+function play(){
 		if(!o_lyrics){
 				o_lyrics = $('.lyrics');
 		}
