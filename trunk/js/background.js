@@ -203,7 +203,7 @@ function addYoukuBookMark(title,url,add){
 
 
 function check(){
-	$.getJSON('http://www.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=1', function(resp){
+	$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=1', function(resp){
 		if(resp && resp.results && resp.total){
 			var s = resp.total;
 			if(resp.results[0].videoid!=localStorage.newestVideoId){

@@ -2,7 +2,7 @@
 function search(page){
 	page = page?page:1;
 	var key = $("#keywords").val();
-	$.getJSON("http://www.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=4&pg="+page, function(data){
+	$.getJSON("http://api.youku.com/api_ptvideo/st_3_pid_XOA?sv="+key+"&rt=3&ob=6&pz=4&pg="+page, function(data){
 		$("#videos").html("");
 		 for(var i=0;i<data.item.length;i++){
 			var ul = document.createElement("ul");
@@ -185,7 +185,7 @@ function getIndexVideo(){
 	try{
 		chrome.browserAction.setBadgeText({text:""});
 	}catch(e){}
-		$.getJSON('http://www.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=4', function(resp){
+		$.getJSON('http://api.youku.com/api_getIndexRecVideos?pid=XOA&pd=1&recommend_type=head&pl=4', function(resp){
 		if(resp && resp.results && resp.total){
 			var ct = resp.results.length;
 			for (var i = 0; i<ct; i++) {
