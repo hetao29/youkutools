@@ -1,11 +1,11 @@
 ﻿function youku_chrome_autoplay(){
 	vid = videoId2;
 	var onPlayerComplete_old = onPlayerComplete
-	onPlayerComplete=function(){
+	onPlayerComplete=function(obj){
 		if($("replay").checked){
 			$("player").innerHTML = $("player").innerHTML;
 		}
-		onPlayerComplete_old();
+		onPlayerComplete_old(obj);
 	}
 }
 
