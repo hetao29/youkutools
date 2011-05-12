@@ -162,6 +162,7 @@ function parseLyric(str)
 		otime=parseInt(/\[offset:(.+)\]/i.test(str)?RegExp.$1:0);
 
 		str=str.replace(/[^\]]\[/g,"\n[");
+		str=str.replace(/\\/g,"");
 		matches = str.match(/\n\[\d+:.+\][^\[\r\n]*/ig);
 		if(!matches)return;
 		rr=matches.length;
