@@ -1,6 +1,6 @@
 ﻿{
 	"name": "__MSG_name__",
-	"version": "0.69",
+	"version": "0.70",
 	"description": "__MSG_descriptin__",
 	"browser_action": {
 		"default_icon": "icons/icon.png",
