@@ -1,6 +1,6 @@
 ﻿function youku_chrome_autoplay(){
-	vid = videoId2;
-	var onPlayerComplete_old = onPlayerComplete
+	$("replay").value= videoId;
+	var onPlayerComplete_old = onPlayerComplete;
 	onPlayerComplete=function(obj){
 		if($("replay").checked){
 			$("player").innerHTML = $("player").innerHTML;
@@ -9,29 +9,29 @@
 	}
 }
 
+var vid2;
 var lyrics_offset = 0;
 var o_lyrics;
 var gc= new Array();
 var pre_index=0;
 var playerId="movie_player";
 var vid = location.href;
-var mvid= 0;
 var url="http://youku.fm/";
 $("#movie_player").ready(function(){
 
-	$(".resize").append('<span class="break">|</span> <span><input id="replay" style=" margin-bottom:1px" type="checkbox"/> <a href="javascript:$(\'replay\').checked?$(\'replay\').checked=false:$(\'replay\').checked=true">循环播放</a></label></a></span>');
-	$(".resize").append("<script>"+youku_chrome_autoplay+";youku_chrome_autoplay();</script>");
-	$(".resize").append("<script>"+youku_chrome_autoplay+";youku_chrome_autoplay();</script>");
+	//$(".resize").append('<span class="break">|</span> <span><input id="replay" style=" margin-bottom:1px" type="checkbox"/> <a href="javascript:$(\'replay\').checked?$(\'replay\').checked=false:$(\'replay\').checked=true">循环播放</a></label></a></span>');
+//	$(".right").prepend('<div class="listOrder"> <div class="box nBox"> <div class="head"> <div class="caption"><h3 class="title">循环播放:<input id="replay" type="checkbox"></h3></div> </div> </div> </div>');
 	if(	
-		!$(".crumbs A:contains('音乐')").html() && $("#vpofficialtitle").html()==null
+		!$(".crumbs A:contains('音乐')").html()
 	)return;;
-	start_interval = setInterval(checkTime,500);
+	start();
+	//start_interval = setInterval(checkTime,500);
 });
-var start_flag=false;
-var start_interval;
+//var start_flag=false;
+//var start_interval;
 function start(){
-	if(start_flag)return;
-	start_flag=true;
+	//if(start_flag)return;
+	//start_flag=true;
 	$.ajax({
 		url: url+"player.main.getlyric",
 		data: {
@@ -49,7 +49,8 @@ function start(){
 				var content='<div class="box nBox" group="info">'+
 						'<div class="head" style="cursor: pointer; ">'+
 						//'<div class="caption"><h3 class="title">歌词信息</h3></div>'+
-						'<div class="caption"><h3 class="title">歌词信息</h3>　由<a href="http://youku.fm/" target="_blank">YouKu.FM</a>提供支持</div>'+
+						'<div class="status" style="display: block; "><div class="ico__collapse"></div></div>'+
+						'<div class="caption"><h3 class="title">歌词信息</h3>　由<a id="fmUrl" href="http://youku.fm/" target="_blank">YouKu.FM</a>提供支持  <input id="replay" type="checkbox"><label for="replay">重复播放</label></div>'+
 						'</div>'+
 						'<div class="body" style="display: block; ">'+
 						'<div class="info" id="long" style="display: block; ">'+
@@ -67,10 +68,12 @@ function start(){
 						'<div class="myad">'+
 						'</div>'+
 						'</div></div></div></div></div></div>';
-					$(".right >div").eq(1).before(content);
+					//$(".right >div").eq(1).before(content);
+					$(".right").prepend(content);
+					$(".right").prepend("<script>"+youku_chrome_autoplay+";youku_chrome_autoplay();CollapseBox.init();</script>");
+					$("#fmUrl").attr("href","http://youku.fm/?vid="+$("#replay").val());
 					showLyric(result.LyricsContent);
 					lyrics_offset = parseInt(result.LyricsOffset);
-					mvid = result.MvID;
 					setInterval(play,500);
 				}
 			}
@@ -83,19 +86,27 @@ function _player(moviename) {
         return document[moviename?moviename:playerId];
 };
 function PlayerInfo(){
+		try{
 		return (document.getElementById(playerId).getNsData());
+		}catch(e){return false;}
 };
 
+/*
 function checkTime(){
 		var r= PlayerInfo();
 		if(!r){
 			return;
-		}
+		}alert(r);
+		for(var i in r){alert(i+":"+r[i]);}
+		alert("X");
 		var time = isNaN(r.time)?0:r.time;
 		var alltime = isNaN(r.alltime)?0:r.alltime;
+		alert(time);
+		alert(alltime);
 		if(alltime>90 && alltime<8*60)start();//8分钟内的才出
 		clearInterval(start_interval);
 }
+*/
 function play(){
 		if(!o_lyrics){
 				o_lyrics = $('.lyrics');
@@ -213,11 +224,11 @@ $("#_IDLyricsBk").live("click",function(){
 		saveOffset();
 });
 function saveOffset(){
-	if(mvid>0){
+	if($("#replay").val()>0){
 		$.ajax({
 			url: url+"player.main.saveoffset",
 			data: {
-				MvID:mvid,
+				VideoID:$("#replay").val(),
 				offset:lyrics_offset
 			},
 			success: function( result) {
@@ -229,11 +240,11 @@ function saveOffset(){
 
 
 $("#_IDLyricsErr").live("click",function(){
-	if(mvid>0){
+	if($("#replay").val()>0){
 		$.ajax({
 			url: url+"player.main.LyricsError",
 			data: {
-				MvID:mvid
+				VideoID:$("#replay").val()	
 			},
 			success: function( result) {
 				$("#_IDLyricsInfo").html("已报错").fadeIn("slow",function(){
