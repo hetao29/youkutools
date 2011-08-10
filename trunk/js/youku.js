@@ -1,5 +1,5 @@
 ﻿function youku_chrome_autoplay(){
-	$("replay").value= videoId;
+	$("vid").value= videoId;
 	var onPlayerComplete_old = onPlayerComplete;
 	onPlayerComplete=function(obj){
 		if($("replay").checked){
@@ -9,33 +9,26 @@
 	}
 }
 
-var vid2;
 var lyrics_offset = 0;
 var o_lyrics;
 var gc= new Array();
 var pre_index=0;
 var playerId="movie_player";
-var vid = location.href;
 var url="http://youku.fm/";
 $("#movie_player").ready(function(){
 
-	//$(".resize").append('<span class="break">|</span> <span><input id="replay" style=" margin-bottom:1px" type="checkbox"/> <a href="javascript:$(\'replay\').checked?$(\'replay\').checked=false:$(\'replay\').checked=true">循环播放</a></label></a></span>');
-//	$(".right").prepend('<div class="listOrder"> <div class="box nBox"> <div class="head"> <div class="caption"><h3 class="title">循环播放:<input id="replay" type="checkbox"></h3></div> </div> </div> </div>');
 	if(	
 		!$(".crumbs A:contains('音乐')").html()
 	)return;;
+	$(".right").prepend("<input type='hidden' id='vid' name='vid'/>");
+	$(".right").prepend("<script>"+youku_chrome_autoplay+";youku_chrome_autoplay();</script>");
 	start();
-	//start_interval = setInterval(checkTime,500);
 });
-//var start_flag=false;
-//var start_interval;
 function start(){
-	//if(start_flag)return;
-	//start_flag=true;
 	$.ajax({
 		url: url+"player.main.getlyric",
 		data: {
-			vid:vid
+			vid:$("#vid").val()
 		},
 		success: function( result) {
 			result=result.replace(/<[^>]+>/g,"");
@@ -70,8 +63,8 @@ function start(){
 						'</div></div></div></div></div></div>';
 					//$(".right >div").eq(1).before(content);
 					$(".right").prepend(content);
-					$(".right").prepend("<script>"+youku_chrome_autoplay+";youku_chrome_autoplay();CollapseBox.init();</script>");
-					$("#fmUrl").attr("href","http://youku.fm/?vid="+$("#replay").val());
+					$(".right").prepend("<script>CollapseBox.init();</script>");
+					$("#fmUrl").attr("href","http://youku.fm/?vid="+$("#vid").val());
 					showLyric(result.LyricsContent);
 					lyrics_offset = parseInt(result.LyricsOffset);
 					setInterval(play,500);
@@ -224,11 +217,11 @@ $("#_IDLyricsBk").live("click",function(){
 		saveOffset();
 });
 function saveOffset(){
-	if($("#replay").val()>0){
+	if($("#vid").val()>0){
 		$.ajax({
 			url: url+"player.main.saveoffset",
 			data: {
-				VideoID:$("#replay").val(),
+				VideoID:$("#vid").val(),
 				offset:lyrics_offset
 			},
 			success: function( result) {
@@ -240,11 +233,11 @@ function saveOffset(){
 
 
 $("#_IDLyricsErr").live("click",function(){
-	if($("#replay").val()>0){
+	if($("#vid").val()>0){
 		$.ajax({
 			url: url+"player.main.LyricsError",
 			data: {
-				VideoID:$("#replay").val()	
+				VideoID:$("#vid").val()	
 			},
 			success: function( result) {
 				$("#_IDLyricsInfo").html("已报错").fadeIn("slow",function(){
